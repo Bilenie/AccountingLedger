@@ -3,100 +3,88 @@ package com.pluralsight;
 import com.pluralsight.model.Transaction;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import static com.pluralsight.AccountingLedgerApp.myScanner;
+
+import static com.pluralsight.AccountingLedgerApp.*;
 
 public class CustomSearch {
+    //format date
+    public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Custom Search @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@//
-public static void customScreen() {
-    //Display message
-    System.out.println("-----------------------------------");
-    System.out.println("----------- Custom Search ---------");
-    System.out.println("-----------------------------------");
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Custom Search @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@//
+    public static void customScreen() {
+        Ledger.getTransaction();
 
-    //prompt the user to input search type
-    System.out.println("Enter the Start Date (MM/dd/yyyy): \n");
-    String startDate = myScanner.nextLine().trim();
-    System.out.println("Enter the End Date (MM/dd/yyyy): \n");
-    String endDate = myScanner.nextLine().trim();
-    System.out.println("Enter the Description: \n");
-    String description= myScanner.nextLine().trim();
-    System.out.println("Enter the Vendor: \n");
-    String vendor = myScanner.nextLine().trim();
-    System.out.println("Enter the Amount: \n");
-    String amount = myScanner.nextLine().trim();
+        //Display message
+        System.out.println("-----------------------------------");
+        System.out.println("----------- Custom Search ---------");
+        System.out.println("-----------------------------------");
 
-    //convert input to the appropriate data type if not empty.
-    LocalDate beginningDate = startDate.isEmpty() ? null : LocalDate.parse(startDate);
-    LocalDate lastDate = endDate.isEmpty() ? null : LocalDate.parse(endDate);
-    Double actualAmount = amount.isEmpty() ? null : Double.parseDouble(amount);
+        //prompt the user to input search type
+        System.out.println("Enter the earliest date you want to filter for (MM/dd/yyyy): \n");
+        String startDate = myScanner.nextLine().trim();
 
+        System.out.println("Enter the end date for your filter (MM/dd/yyyy): \n");
+        String endDate = myScanner.nextLine().trim();
 
-    //Based on the input do the logic
-    boolean found = false;
+        System.out.println("Enter the Vendor: \n");
+        String vendor = myScanner.nextLine().trim();
 
-    for (Transaction t : AccountingLedgerApp.allTransaction) {
+        System.out.println("For the amount filter you will enter the minimum and maximum amounts: \n");
+        System.out.print("Enter minimum amount: \n");
+        String minAmount = myScanner.nextLine().trim();
 
-        boolean matches = true;
+        System.out.print("Enter maximum amount: \n");
+        String maxAmount = myScanner.nextLine().trim();
 
-        // ================= Date Matching ====================
-        //if user input last date , get the date from all the transaction before the lastDate including itself.
-        //if user input beginning date, get the date from all the transaction everything after the beginning date including itself.
-        //No input skip it.
-        //Date should be in the transaction and match it, if not print "no transaction found with this date".
+        //convert input to the appropriate data type if not empty.
+        LocalDate beginningDate = startDate.isEmpty() ? null : LocalDate.parse(startDate, dateFormat);
+        LocalDate lastDate = endDate.isEmpty() ? null : LocalDate.parse(endDate, dateFormat);
+        Double actualMin = minAmount.isEmpty() ? null : Double.parseDouble(minAmount);
+        Double actualMax = maxAmount.isEmpty() ? null : Double.parseDouble(maxAmount);
 
-        LocalDate tDate = t.getDate();
+        //Based on the input do the logic
+        boolean found = false;
 
-        if (beginningDate != null && lastDate != null) {
-            if (tDate.isBefore(beginningDate) || tDate.isAfter(lastDate)) {
-                matches = false;
+        for (Transaction t : AccountingLedgerApp.allTransaction) {
+            // REMOVED: System.out.println(t); - This was printing every transaction
+
+            // ================= Date Matching ====================
+            LocalDate tDate = t.getDate();
+
+            if (beginningDate != null && lastDate != null) {
+                if (tDate.isBefore(beginningDate) || tDate.isAfter(lastDate)) {
+                    continue;
+                }
+            } else if (beginningDate != null) {
+                if (tDate.isBefore(beginningDate)) {
+                    continue;
+                }
+            } else if (lastDate != null) {
+                if (tDate.isAfter(lastDate)) {
+                    continue;
+                }
             }
-        } else if (beginningDate != null) {
-            if (tDate.isBefore(beginningDate)) {
-                matches = false;
+
+            // ================ Vendor Matching =====================
+            if (!vendor.isBlank() && !t.getVendor().toLowerCase().contains(vendor.toLowerCase())) {
+                // FIXED: Made both sides lowercase for proper case-insensitive matching
+                continue;
             }
-        } else if (lastDate != null) {
-            if (tDate.isAfter(lastDate)) {
-                matches = false;
-            }
-        }
 
-        // ================ Description Matching ================
+            // ================ Amount Matching =====================
+            // FIXED: Corrected the logic - should be < for min and > for max
+            if (actualMin != null && t.getAmount() < actualMin) continue;
+            if (actualMax != null && t.getAmount() > actualMax) continue;
 
-        if (!description.isBlank() && !t.getDescription().toLowerCase().contains(description.toLowerCase())) {
-            //if user input description we get all the transaction matching the description input.
-            //if the description input not in the transaction display no transaction found.
-            //if user left it empty skip it.
-            matches = false;
-        }
-
-        // ================ Vendor Matching =====================
-        if (!vendor.isBlank() && !t.getVendor().toLowerCase().contains(vendor)) {
-            //if user input vendor we will get all the transaction matching the vendor input.
-            //if the vendor input not in the transaction display no transaction found.
-            //if user left it empty skip it.
-            matches = false;
-        }
-
-        // ================ Amount Matching =====================
-        if (actualAmount != null && t.getAmount() != actualAmount) {
-            //if user input amount get all the transaction matching the amount input.
-            //if the amount input not in the transaction display no transaction found.
-            //if user left it empty skip it.
-            matches = false;
-        }
-
-        if (matches) {
+            // Only print transactions that match ALL criteria
             System.out.println(t);
             found = true;
         }
-    }
 
-    if (!found) {
-        System.out.println("No transactions matched your custom search.");
+        if (!found) {
+            System.out.println("No transactions matched your custom search.");
+        }
     }
 }
-}
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Custom Search @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@//
-
