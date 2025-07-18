@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static com.pluralsight.AccountingLedgerApp.*;
+import static com.pluralsight.dao.TransactionDao.addDeposit;
 
 public class Home {
 
@@ -56,7 +57,7 @@ public static void homeScreen() {
 //***************************** End *********************************************************//
 
 //******************************* Add Deposit Method ******************************************************//
-public static void addDeposit() {
+/* public static void addDeposit() {
     //Method to get deposit information(date,time,description,vendor & amount) and write it to transaction.csv
 
     //wrap the question with answer return in a while loop because I want to ask each question again if it is not valid.
@@ -112,7 +113,7 @@ public static void addDeposit() {
      * Create an object to collect the csv files data  pass argument.
      * we write on the object with the format passed.
      * Then print success message once done  */
-}
+
 //***************************** End of addDeposit *********************************************************//
 
 //******************************* Add Payment/Debit Method *****************************************************//
