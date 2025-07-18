@@ -1,8 +1,9 @@
 package com.pluralsight;
 
+import com.pluralsight.model.Transaction;
+
 import java.time.LocalDate;
 
-import static com.pluralsight.AccountingLedgerApp.allTransaction;
 import static com.pluralsight.AccountingLedgerApp.myScanner;
 
 public class CustomSearch {

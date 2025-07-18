@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import com.pluralsight.model.Transaction;
+
 import java.time.LocalDate;
 import static com.pluralsight.AccountingLedgerApp.*;
 
