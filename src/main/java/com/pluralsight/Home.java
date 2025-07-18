@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static com.pluralsight.AccountingLedgerApp.*;
+import static com.pluralsight.dao.TransactionDao.addDeposit;
+import static com.pluralsight.dao.TransactionDao.addPayment;
 
 public class Home {
 
@@ -56,7 +58,7 @@ public static void homeScreen() {
 //***************************** End *********************************************************//
 
 //******************************* Add Deposit Method ******************************************************//
-public static void addDeposit() {
+/* public static void addDeposit() {
     //Method to get deposit information(date,time,description,vendor & amount) and write it to transaction.csv
 
     //wrap the question with answer return in a while loop because I want to ask each question again if it is not valid.
@@ -112,11 +114,11 @@ public static void addDeposit() {
      * Create an object to collect the csv files data  pass argument.
      * we write on the object with the format passed.
      * Then print success message once done  */
-}
+
 //***************************** End of addDeposit *********************************************************//
 
 //******************************* Add Payment/Debit Method *****************************************************//
-public static void addPayment() {
+/*public static void addPayment() {
 //Method to get payment information(date,time,description,vendor & amount) and write it to transaction.csv
     try {//first create a file and write the header (only if file is new)
         String fileCsv = "src/main/resources/transaction.csv";//declare the file name we want with a path.
@@ -161,7 +163,7 @@ public static void addPayment() {
      * Create an object to collect the csv files data  pass argument.
      * we write on the object with the format we want  the information we want to get.
      * Then print success message once done  */
-}
+
 //***************************** End of Payment/Debit Method *********************************************************//
 
 //****************************************** Validation Method ********************************************//

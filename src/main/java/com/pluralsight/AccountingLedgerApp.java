@@ -11,13 +11,13 @@ import java.util.Scanner;
 public class AccountingLedgerApp {
 
 //declare the scanner,datetime formatter, ArrayList as a static to be able to use it throughout the class.
-static Scanner myScanner = new Scanner(System.in);
-static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-static DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
-static ArrayList<Transaction> allTransaction = new ArrayList<>();
-static LocalDate today = LocalDate.now();
-static int currentYear = today.getYear();
-static int currentMonth = today.getMonthValue();
+public static Scanner myScanner = new Scanner(System.in);
+public static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+public static DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+public static ArrayList<Transaction> allTransaction = new ArrayList<>();
+public static LocalDate today = LocalDate.now();
+public static int currentYear = today.getYear();
+public static int currentMonth = today.getMonthValue();
 
 //Static LocalDateTime dateTimeConvert = LocalDateTime.parse( "date time", formatter);
 public static void main(String[] args) {
@@ -36,7 +36,7 @@ public static void main(String[] args) {
         // Create the datasource
         BasicDataSource dataSource = new BasicDataSource();
         // Configure the datasource
-        dataSource.setUrl("jdbc:mysql://localhost:3306/Northwind");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/acountingledger");
         dataSource.setUsername(username);
         dataSource.setPassword(password);
         Home.homeScreen();
