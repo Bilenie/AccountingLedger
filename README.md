@@ -66,6 +66,10 @@ Reports Screen:
 
 ![Watch demo video](src/main/resources/videos/remote-screen-ezgif.com-video-to-gif-converter.gif)
 
+Custome Search Screen:
+
+![Watch demo video](src/main/resources/videos/remote-screen-ezgif.com-video-to-gif-converter.gif)
+
 
 ## Credit
 Thanks to my instructor, tutor center support, my peers, lots of Googling, and AI assistance for helping me complete this project. Their support helped me figure out how to approach building the screens, handle file operations, and debug issues along the way.
